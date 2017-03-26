@@ -8,6 +8,7 @@ import com.peeredge.core.common.Models.CallType;
 import org.linphone.LinphoneManager;
 import org.linphone.core.LinphoneCallStats;
 import org.linphone.core.LinphoneCore;
+import org.linphone.core.LinphoneCoreException;
 import org.linphone.core.LinphoneCoreListener;
 import org.linphone.core.LinphoneCoreListenerBase;
 
@@ -66,7 +67,7 @@ public class LinphoneCall implements Call{
 
     @Override
     public boolean isTerminated() {
-         return mCallState == CallState.DISCONNECTED || mCallState == CallState.DISCONNECTING || mCallState == CallState.INVALID;;
+         return mCallState == CallState.DISCONNECTED || mCallState == CallState.DISCONNECTING || mCallState == CallState.INVALID;
     }
 
     @Override
@@ -104,22 +105,27 @@ public class LinphoneCall implements Call{
 
     @Override
     public void hold() {
+        lc.pauseCall(nativeCall);
 
     }
 
     @Override
     public void unHold() {
-
+        lc.resumeCall(nativeCall);
     }
 
     @Override
     public void accept() {
-
+        try {
+            lc.acceptCall(nativeCall);
+        } catch (LinphoneCoreException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void hangup() {
-
+        LinphoneManager.getLc().terminateCall(nativeCall);
     }
 
     @Override
@@ -139,35 +145,35 @@ public class LinphoneCall implements Call{
             CallEvents.CallStateListener listener = iterator.next();
             listener.onStateChange(this);
         }
+        if (mCallState == CallState.DISCONNECTED) {
+            lc.removeListener(listener);
+            listeners.clear();
+        }
     }
 
 
     private static int translateState(org.linphone.core.LinphoneCall.State state) {
-//        if(state == org.linphone.core.LinphoneCall.State.IncomingReceived)
-//        {
-//            return CallState.INCOMING;
-//        }
-//        else if(state == org.linphone.core.LinphoneCall.State.CallEnd || state == org.linphone.core.LinphoneCall.State.CallReleased)
-//        {
-//            return CallState.DISCONNECTED;
-//        }
-//        else if(state == org.linphone.core.LinphoneCall.State.StreamsRunning || state == org.linphone.core.LinphoneCall.State.Connected )
-//        {
-//            return CallState.ACTIVE;
-//        }
-//        else if(state == org.linphone.core.LinphoneCall.State.Paused || state == org.linphone.core.LinphoneCall.State.Pausing)
-//        {
-//            return CallState.ONHOLD;
-//        }
-//        else if(state == org.linphone.core.LinphoneCall.State.Connected)
-//        {
-//
-//        }
-//        else if(state == org.linphone.core.LinphoneCall.State.)
-//        {
-//
-//        }
+        if( state == org.linphone.core.LinphoneCall.State.IncomingReceived ) return CallState.INCOMING ;
+        else if( state == org.linphone.core.LinphoneCall.State.OutgoingInit) return CallState.CONNECTING ;
+        else if( state == org.linphone.core.LinphoneCall.State.OutgoingProgress) return CallState.CONNECTING ;
+        else if( state == org.linphone.core.LinphoneCall.State.OutgoingRinging) return CallState.CONNECTING ;
+        else if( state == org.linphone.core.LinphoneCall.State.OutgoingEarlyMedia) return CallState.CONNECTING ;
+        else if( state == org.linphone.core.LinphoneCall.State.Connected) return CallState.ACTIVE ;
+        else if( state == org.linphone.core.LinphoneCall.State.StreamsRunning) return CallState.ACTIVE ;
+        else if( state == org.linphone.core.LinphoneCall.State.Pausing) return CallState.ONHOLD ;
+        else if( state == org.linphone.core.LinphoneCall.State.Paused ) return CallState.ONHOLD ;
+        else if( state == org.linphone.core.LinphoneCall.State.Resuming) return CallState.ACTIVE ;
+        else if( state == org.linphone.core.LinphoneCall.State.Refered ) return -1 ;
+        else if( state == org.linphone.core.LinphoneCall.State.Error ) return CallState.DISCONNECTED ;
+        else if( state == org.linphone.core.LinphoneCall.State.CallEnd) return CallState.DISCONNECTED ;
+        else if( state == org.linphone.core.LinphoneCall.State.PausedByRemote) return CallState.ACTIVE ;
+        else if( state == org.linphone.core.LinphoneCall.State.CallUpdatedByRemote) return CallState.ACTIVE ;
+        else if( state == org.linphone.core.LinphoneCall.State.CallIncomingEarlyMedia ) return -1 ;
+        else if( state == org.linphone.core.LinphoneCall.State.CallUpdating ) return -1 ;
+        else if( state == org.linphone.core.LinphoneCall.State.CallReleased ) return CallState.DISCONNECTED ;
+        else if( state == org.linphone.core.LinphoneCall.State.CallEarlyUpdatedByRemote) return -1 ;
 
+        return -1;
     }
 
     class CallEventLisener extends LinphoneCoreListenerBase
@@ -176,6 +182,12 @@ public class LinphoneCall implements Call{
         public void callState(LinphoneCore lc, org.linphone.core.LinphoneCall call, org.linphone.core.LinphoneCall.State state, String message) {
             if(call != nativeCall)
                 return;
+            int translatedState = translateState(state);
+            if(translatedState < 0)
+                return;
+
+            if (mCallState != translatedState)
+                setCallState(translatedState);
             //CallUpdatedByRemote accept call update
         }
     }

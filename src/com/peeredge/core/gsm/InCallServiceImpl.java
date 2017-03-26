@@ -89,7 +89,7 @@ public class InCallServiceImpl extends InCallService {
         ContextProvider._context = getApplicationContext();
         stack = StackProvider.getStack();
         stack.setInCallService(this);
-        stack.setIncomingCallActivity(MainActivity.class);
+
 
         return super.onBind(intent);
     }

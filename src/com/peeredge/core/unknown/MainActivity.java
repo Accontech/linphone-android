@@ -1,6 +1,7 @@
 package com.peeredge.core.unknown;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.peeredge.core.common.Models.CallState;
 import com.peeredge.core.common.Stack;
 import com.peeredge.core.common.StackProvider;
 
+import org.linphone.LinphoneActivity;
 import org.linphone.R;
 
 
@@ -29,6 +31,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
         setContentView(R.layout.test);
         ContextProvider._context = getApplicationContext();
         stack = StackProvider.getStack();
+
+        findViewById(R.id.btn_linphone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, LinphoneActivity.class));
+            }
+        });
         answer = findViewById(R.id.btn_accept);
         reject = findViewById(R.id.btn_reject);
         hangup = findViewById(R.id.btn_hangup);

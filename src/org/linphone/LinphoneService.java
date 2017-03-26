@@ -63,6 +63,8 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.WindowManager;
 
+import com.peeredge.core.common.StackProvider;
+
 /**
  *
  * Linphone service, reacting to Incoming calls, ...<br />
@@ -347,7 +349,7 @@ public final class LinphoneService extends Service {
 				}
 
 				if (state == LinphoneCall.State.IncomingReceived) {
-					onIncomingReceived();
+					onIncomingReceived(call);
 				}
 
 				if (state == State.CallEnd || state == State.CallReleased || state == State.Error) {
@@ -833,11 +835,12 @@ public final class LinphoneService extends Service {
 		notifyWrapper(NOTIF_ID, mNotif);*/
 	}
 
-	protected void onIncomingReceived() {
+	protected void onIncomingReceived(LinphoneCall call) {
 		//wakeup linphone
-		startActivity(new Intent()
-				.setClass(this, incomingReceivedActivity)
-				.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//		startActivity(new Intent()
+//				.setClass(this, incomingReceivedActivity)
+//				.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+		StackProvider.getStack().add_new_call(new com.peeredge.core.linphone.LinphoneCall(call));
 	}
 
 

@@ -77,4 +77,12 @@
         android:layout_alignStart="@+id/btn_unhold"
         android:layout_marginStart="21dp" />
 
+    <Button
+        android:text="Linphone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/btn_linphone" />
+
 </RelativeLayout>

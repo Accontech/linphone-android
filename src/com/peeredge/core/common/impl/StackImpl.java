@@ -26,7 +26,7 @@ import java.util.Set;
  * Created by samson on 3/25/17.
  */
 public class StackImpl implements Stack , CallEvents.CallStateListener{
-    Class<?> cls;
+    private Class<?> cls;
     private Map<String, Call> calls = new HashMap<>();
     private ArrayList<CallStackEvents.IncomingCallListener> incomingCallListeners = new ArrayList<>();
     private Map<CallType, Set<AudioEventListener>> audioEventListener = new HashMap<>();
