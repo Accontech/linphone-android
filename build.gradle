@@ -42,7 +42,7 @@ if (firebaseEnable()) {
 
 android {
   defaultConfig {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "25.0.2"
     applicationId getPackageName()
     multiDexEnabled true

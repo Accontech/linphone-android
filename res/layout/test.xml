@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accept"
+        android:id="@+id/btn_accept"
+        android:layout_alignTop="@+id/btn_reject"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="50dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reject"
+        android:id="@+id/btn_reject"
+        android:layout_marginBottom="38dp"
+        android:layout_above="@+id/btn_hangup"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="56dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HangUP"
+        android:id="@+id/btn_hangup"
+        android:layout_marginBottom="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/btn_accept" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/textView"
+        android:layout_marginTop="58dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/btn_hangup" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hold"
+        android:id="@+id/btn_hold"
+        android:layout_marginTop="43dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/btn_accept" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UnHold"
+        android:id="@+id/btn_unhold"
+        android:layout_alignTop="@+id/btn_hold"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mute"
+        android:id="@+id/btn_mute"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/btn_hold"
+        android:layout_toStartOf="@+id/btn_unhold" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UnMute"
+        android:id="@+id/btn_unmute"
+        android:layout_alignTop="@+id/btn_mute"
+        android:layout_alignStart="@+id/btn_unhold"
+        android:layout_marginStart="21dp" />
+
+</RelativeLayout>
