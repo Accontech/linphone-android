@@ -12,6 +12,7 @@ import org.linphone.core.LinphoneCoreListener;
 import org.linphone.core.LinphoneCoreListenerBase;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -22,12 +23,14 @@ public class LinphoneCall implements Call{
     private int mCallState;
     private boolean mIsIncoming;
     private volatile Set<CallEvents.CallStateListener> listeners = new HashSet<>();
+    private LinphoneCore lc;
+    private CallEventLisener listener = new CallEventLisener();
 
     public LinphoneCall(org.linphone.core.LinphoneCall call)
     {
         nativeCall = call;
-        LinphoneCore lc = LinphoneManager.getLc();
-        lc.addListener();
+        lc = LinphoneManager.getLc();
+        lc.addListener(listener);
 
     }
 
@@ -83,11 +86,14 @@ public class LinphoneCall implements Call{
 
     @Override
     public void addCallEventListener(CallEvents.CallStateListener listener) {
-
+        if(listener != null)
+            listeners.add(listener);
     }
 
     @Override
     public void removeCallEventListener(CallEvents.CallStateListener listener) {
+        if(listeners.contains(listener))
+            listeners.remove(listener);
 
     }
 
@@ -122,6 +128,47 @@ public class LinphoneCall implements Call{
     }
 
 
+    private void setCallState(int translatedState) {
+        mCallState = translatedState;
+        if(mCallState == CallState.INCOMING)
+            mIsIncoming = true;
+
+        Iterator<CallEvents.CallStateListener> iterator = listeners.iterator();
+        while (iterator.hasNext())
+        {
+            CallEvents.CallStateListener listener = iterator.next();
+            listener.onStateChange(this);
+        }
+    }
+
+
+    private static int translateState(org.linphone.core.LinphoneCall.State state) {
+//        if(state == org.linphone.core.LinphoneCall.State.IncomingReceived)
+//        {
+//            return CallState.INCOMING;
+//        }
+//        else if(state == org.linphone.core.LinphoneCall.State.CallEnd || state == org.linphone.core.LinphoneCall.State.CallReleased)
+//        {
+//            return CallState.DISCONNECTED;
+//        }
+//        else if(state == org.linphone.core.LinphoneCall.State.StreamsRunning || state == org.linphone.core.LinphoneCall.State.Connected )
+//        {
+//            return CallState.ACTIVE;
+//        }
+//        else if(state == org.linphone.core.LinphoneCall.State.Paused || state == org.linphone.core.LinphoneCall.State.Pausing)
+//        {
+//            return CallState.ONHOLD;
+//        }
+//        else if(state == org.linphone.core.LinphoneCall.State.Connected)
+//        {
+//
+//        }
+//        else if(state == org.linphone.core.LinphoneCall.State.)
+//        {
+//
+//        }
+
+    }
 
     class CallEventLisener extends LinphoneCoreListenerBase
     {
@@ -129,6 +176,7 @@ public class LinphoneCall implements Call{
         public void callState(LinphoneCore lc, org.linphone.core.LinphoneCall call, org.linphone.core.LinphoneCall.State state, String message) {
             if(call != nativeCall)
                 return;
+            //CallUpdatedByRemote accept call update
         }
     }
 
