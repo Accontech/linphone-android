@@ -158,15 +158,13 @@ public class StackImpl implements Stack , CallEvents.CallStateListener{
     public Call[] getActiveCalls() {
         if(calls.size() == 0)
             return null;
-        int len = calls.size();
-        Call[] callsArray = new Call[len];
-        int index = 0;
+        ArrayList<Call> callsArrayList = new ArrayList<>();
         for (Call call : calls.values())
         {
-            callsArray[index] = call;
-            index ++;
+            if(!call.isTerminated())
+                callsArrayList.add(call);
         }
-        return callsArray;
+        return callsArrayList.toArray(new Call[callsArrayList.size()]);
     }
 
     @Override

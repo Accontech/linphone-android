@@ -3,17 +3,19 @@ package com.peeredge.core.unknown;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.peeredge.core.common.ContextProvider;
 import com.peeredge.core.common.ListenerInterfaces.CallEvents;
 import com.peeredge.core.common.ListenerInterfaces.CallStackEvents;
-import com.peeredge.core.common.ModelInterfaces.*;
 import com.peeredge.core.common.ModelInterfaces.Call;
 import com.peeredge.core.common.Models.CallState;
 import com.peeredge.core.common.Stack;
 import com.peeredge.core.common.StackProvider;
+import com.peeredge.test.CallsAdapter;
 
 import org.linphone.LinphoneActivity;
 import org.linphone.R;
@@ -24,6 +26,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
     Stack stack;
     View answer, reject, hangup, hold, unhold, mute, unmute;
     TextView status;
+    TextView number;
+    CallsAdapter adapter = new CallsAdapter();
     com.peeredge.core.common.ModelInterfaces.Call call;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
         mute = findViewById(R.id.btn_mute);
         unmute = findViewById(R.id.btn_unmute);
         status = (TextView) findViewById(R.id.textView);
+        number = (TextView) findViewById(R.id.txt_number);
 
         answer.setOnClickListener(this);
         reject.setOnClickListener(this);
@@ -54,6 +59,23 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
         mute.setOnClickListener(this);
         answer.setOnClickListener(this);
         unmute.setOnClickListener(this);
+        unhold.setOnClickListener(this);
+
+        LinearLayoutManager linearLayoutManagerVertical =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_calls);
+        recyclerView.setLayoutManager(linearLayoutManagerVertical);
+        recyclerView.setAdapter(adapter);
+        adapter.setListener(new CallsAdapter.ClickListener() {
+            @Override
+            public void onItemClicked(Call call, View view) {
+                MainActivity.this.call = call;
+                invalidateCallUI();
+            }
+        });
+
+
     }
 
     boolean hasHigherPriority(Call call1, Call call2)
@@ -62,51 +84,81 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
             return true;
         if (call1.isIncoming())
             return true;
-        if(call1.isActive() && !call2.isIncoming())
+        if(call2.isIncoming())
+            return false;
+        if(call1.isActive() && !call2.isActive())
             return true;
 
         return false;
     }
-    void getCall()
+    void invalidateCallUI()
     {
-        call = null;
+        Call[] calls = stack.getActiveCalls();
+        if(call != null && call.isTerminated())
+        {
+            call = null;
+        }
+
         if(stack.getActiveCalls() != null)
         {
-            Call[] calls = stack.getActiveCalls();
-            for (Call callitem : calls)
+
+            if (call == null)
             {
-                if (hasHigherPriority(callitem, call))
-                    call = callitem;
+                call = calls[0];
             }
 
         }
         showUI(call);
+        adapter.setCalls(calls, call);
     }
 
     void showUI(Call call)
     {
-        if(call == null)
+        if(call == null) {
             status.setText("There is no Call");
-        else
-            status.setText(CallState.toString(call.getCallState()));
+            number.setText("Number");
+
+        }
+        else {
+            status.setText(call.getType() + " : " + CallState.toString(call.getCallState()));
+            number.setText(call.getRemoteDisplay());
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getCall();
+        invalidateCallUI();
         stack.addNewCallListener(this);
-        if(call != null)
-            call.addCallEventListener(this);
+        addCallListeners();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         stack.removeIncomingCallListener(this);
-        if(call != null)
-            call.removeCallEventListener(this);
+        removeCallListeners();
         call = null;
+    }
+
+    void addCallListeners()
+    {
+        Call[] calls = stack.getActiveCalls();
+        if(calls != null)
+        {
+            for (Call call : calls)
+                call.addCallEventListener(this);
+        }
+    }
+    void removeCallListeners()
+    {
+        Call[] calls = stack.getActiveCalls();
+        if(calls != null)
+        {
+            for (Call call : calls)
+                call.removeCallEventListener(this);
+        }
     }
 
     @Override
@@ -142,18 +194,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
 
     @Override
     public boolean onNewCall(Call call) {
-        getCall();
+        invalidateCallUI();
         this.call.addCallEventListener(this);
         return false;
     }
 
     @Override
     public void onStateChange(Call call) {
-        if (call.getCallState() == CallState.DISCONNECTED)
-        {
-            getCall();
-            return;
-        }
-        showUI(call);
+        invalidateCallUI();
     }
 }

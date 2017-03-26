@@ -47,7 +47,7 @@ public class GsmCall  implements Call {
 
     @Override
     public CallType getType() {
-        return null;
+        return CallType.GSM;
     }
 
     @Override

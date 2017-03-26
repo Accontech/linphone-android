@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        >
+
+        <TextView
+            android:padding="2dp"
+            android:textSize="10sp"
+            android:text="GSM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_type"/>
+        <TextView
+            android:text="Number"
+            android:maxLines="1"
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_number"/>
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:text="Answer"
+        android:textSize="10sp"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_accept"
+        style="@android:style/Widget.Material.Light.Button.Borderless.Colored" />
+
+    <Button
+        android:text="End"
+        android:textSize="10sp"
+        android:textColor="@android:color/holo_red_light"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_reject"
+        style="@android:style/Widget.Material.Light.Button.Borderless.Colored" />
+
+</LinearLayout>

@@ -32,6 +32,8 @@ import android.telephony.TelephonyManager;
 public class PhoneStateChangedReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		if(true)
+			return;
 		final String extraState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
 		if (TelephonyManager.EXTRA_STATE_OFFHOOK.equals(extraState)) {
