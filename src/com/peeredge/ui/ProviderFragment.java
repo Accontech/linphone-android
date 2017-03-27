@@ -1,8 +1,11 @@
 package com.peeredge.ui;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.peeredge.http.HttpService;
 import com.peeredge.ui.manager.AppManager;
 
 import org.linphone.R;
@@ -28,6 +32,8 @@ public class ProviderFragment extends Fragment {
 
     private ImageView imgLogin;
     private RecyclerView myRecyclerView;
+    private HttpService httpService;
+    private boolean isServiceConnected;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,6 +54,42 @@ public class ProviderFragment extends Fragment {
         return view;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!isServiceConnected)
+        {
+            Intent intent = new Intent(getActivity(),HttpService.class);
+            getActivity().bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
+            isServiceConnected = true;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(isServiceConnected)
+        {
+            getActivity().unbindService(serviceConnection);
+        }
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+
+            HttpService.MyServiceBinder binder = (HttpService.MyServiceBinder)iBinder;
+            httpService = binder.getService();
+            httpService.getProviders();
+            isServiceConnected = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            isServiceConnected = false;
+        }
+    };
 
     private void  initUI(View view)
     {

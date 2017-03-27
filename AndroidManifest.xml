@@ -515,6 +515,8 @@
             android:screenOrientation="portrait"
             ></activity>
 
+        <service android:name="com.peeredge.http.HttpService"/>
+
     </application>
 
 </manifest>

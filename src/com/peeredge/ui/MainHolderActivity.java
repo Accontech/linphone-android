@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.peeredge.database.DbQuery;
 import com.peeredge.ui.manager.AppManager;
 
 import org.linphone.R;
@@ -17,6 +18,7 @@ public class MainHolderActivity extends FragmentActivity implements View.OnClick
 
     private TextView txtLogout;
     private AppManager appManager;
+    private DbQuery dbQuery;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +27,15 @@ public class MainHolderActivity extends FragmentActivity implements View.OnClick
         txtLogout = (TextView)findViewById(R.id.logout);
         txtLogout.setOnClickListener(this);
 
+        dbQuery = new DbQuery(this);
+
         appManager = AppManager.getInstance(this);
     }
 
     @Override
     public void onClick(View view) {
         appManager.clear();
+        dbQuery.deleteProviders();
         startActivity(new Intent(MainHolderActivity.this, LoginActivity.class));
         finish();
 
