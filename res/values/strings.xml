@@ -16,6 +16,14 @@
     <string name="about_link">www.linphone.org</string>
     <string name="sync_account_name">linphone contacts</string>
 
+
+    <string name="welcome">Welcome to your \n communicator</string>
+    <string name="main_screen_info">You are now able to send and receive \n \n
+                                    voice calls from the standard dialpad. \n \n
+                                    You may exit this app and it will  \n \n
+                                    continue to run the background.
+    </string>
+
     <!-- Common -->
     <string name="username">Username</string>
     <string name="phone_number">Phone number</string>
@@ -55,7 +63,6 @@
     <string name="app_description">the <i>libre</i> SIP client</string>
 
     <!-- Assistant -->
-    <string name="welcome">Welcome</string>
     <string name="assistant">Assistant</string>
     <string name="assistant_create_account">Create account</string>
     <string name="assistant_link_account">Link account</string>

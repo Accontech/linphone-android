@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/txtProvider"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/text_selector_provider_screen"
+    android:textAppearance="?android:textAppearanceMedium"
+    android:text="sss"
+    android:layout_marginBottom="20dp"
+    android:textIsSelectable="true"
+    android:clickable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
