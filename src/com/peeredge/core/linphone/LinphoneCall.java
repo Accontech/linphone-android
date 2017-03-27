@@ -133,6 +133,11 @@ public class LinphoneCall implements Call{
 
     }
 
+    @Override
+    public int getDuration() {
+        return 0;
+    }
+
 
     private void setCallState(int translatedState) {
         mCallState = translatedState;

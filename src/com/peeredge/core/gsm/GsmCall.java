@@ -7,6 +7,7 @@ import com.peeredge.core.common.ListenerInterfaces.CallEvents;
 import com.peeredge.core.common.ModelInterfaces.Call;
 import com.peeredge.core.common.Models.CallState;
 import com.peeredge.core.common.Models.CallType;
+import com.peeredge.core.common.StackProvider;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -136,6 +137,11 @@ public class GsmCall  implements Call {
     @Override
     public void sendDtmf(char digit) {
 
+    }
+
+    @Override
+    public int getDuration() {
+        return 0;
     }
 
     private void setCallState(int translatedState) {

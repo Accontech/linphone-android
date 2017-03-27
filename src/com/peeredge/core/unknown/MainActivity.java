@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.peeredge.core.common.ContextProvider;
@@ -24,7 +25,8 @@ import org.linphone.R;
 public class MainActivity extends Activity implements View.OnClickListener, CallStackEvents.IncomingCallListener, CallEvents.CallStateListener {
 
     Stack stack;
-    View answer, reject, hangup, hold, unhold, mute, unmute;
+    Button answer, reject, hangup, hold, mute;
+    View in_holder, out_holder;
     TextView status;
     TextView number;
     CallsAdapter adapter = new CallsAdapter();
@@ -42,15 +44,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
                 startActivity(new Intent(MainActivity.this, LinphoneActivity.class));
             }
         });
-        answer = findViewById(R.id.btn_accept);
-        reject = findViewById(R.id.btn_reject);
-        hangup = findViewById(R.id.btn_hangup);
-        hold = findViewById(R.id.btn_hold);
-        unhold = findViewById(R.id.btn_unhold);
-        mute = findViewById(R.id.btn_mute);
-        unmute = findViewById(R.id.btn_unmute);
+        answer = (Button) findViewById(R.id.btn_accept);
+        reject = (Button) findViewById(R.id.btn_reject);
+        hangup = (Button) findViewById(R.id.btn_hangup);
+        hold = (Button) findViewById(R.id.btn_hold);
+        mute = (Button) findViewById(R.id.btn_mute);
         status = (TextView) findViewById(R.id.textView);
         number = (TextView) findViewById(R.id.txt_number);
+        in_holder = findViewById(R.id.in_call_controlers);
+        out_holder = findViewById(R.id.out_call_controlers);
 
         answer.setOnClickListener(this);
         reject.setOnClickListener(this);
@@ -58,8 +60,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
         hold.setOnClickListener(this);
         mute.setOnClickListener(this);
         answer.setOnClickListener(this);
-        unmute.setOnClickListener(this);
-        unhold.setOnClickListener(this);
 
         LinearLayoutManager linearLayoutManagerVertical =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -117,11 +117,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
         if(call == null) {
             status.setText("There is no Call");
             number.setText("Number");
+            in_holder.setVisibility(View.GONE);
+            out_holder.setVisibility(View.GONE);
 
         }
         else {
             status.setText(call.getType() + " : " + CallState.toString(call.getCallState()));
             number.setText(call.getRemoteDisplay());
+            if(call.getCallState() == CallState.INCOMING)
+            {
+                in_holder.setVisibility(View.VISIBLE);
+                out_holder.setVisibility(View.GONE);
+            }
+            else
+            {
+                in_holder.setVisibility(View.GONE);
+                out_holder.setVisibility(View.VISIBLE);
+                hold.setText(call.isOnHold() ? "UnHold" : "Hold");
+                mute.setText(stack.isMicMuted(call.getType()) ? "UnMute" : "Mute");
+            }
         }
 
     }
@@ -177,16 +191,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Call
                 call.hangup();
                 break;
             case R.id.btn_hold:
-                call.hold();
-                break;
-            case R.id.btn_unhold:
-                call.unHold();
+                if (call.isOnHold())
+                    call.unHold();
+                else
+                    call.hold();
                 break;
             case R.id.btn_mute:
                 stack.setMute(call, true);
-                break;
-            case R.id.btn_unmute:
-                stack.setMute(call, false);
                 break;
         }
 

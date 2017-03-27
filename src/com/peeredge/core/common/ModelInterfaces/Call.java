@@ -107,6 +107,7 @@ public interface Call {
     void sendDtmf(char digit);
 
 
+    int getDuration();
 
 
 }

@@ -11,6 +11,7 @@ import com.peeredge.core.common.ListenerInterfaces.CallEvents;
 import com.peeredge.core.common.ListenerInterfaces.CallStackEvents;
 import com.peeredge.core.common.ModelInterfaces.AccountConfig;
 import com.peeredge.core.common.ModelInterfaces.Call;
+import com.peeredge.core.common.Models.CallState;
 import com.peeredge.core.common.Models.CallType;
 import com.peeredge.core.common.Stack;
 
@@ -141,6 +142,15 @@ public class StackImpl implements Stack , CallEvents.CallStateListener{
         }
     }
 
+
+    private void hold_calls_except(Call call) {
+        for(Call callItem : calls.values())
+        {
+            if(callItem != call && call.getCallState() == CallState.ACTIVE)
+                callItem.hold();
+        }
+    }
+
     private void startCallActivity(Call call)
     {
         Context context = ContextProvider.getContext();
@@ -164,6 +174,8 @@ public class StackImpl implements Stack , CallEvents.CallStateListener{
             if(!call.isTerminated())
                 callsArrayList.add(call);
         }
+        if(callsArrayList.size() == 0)
+            return null;
         return callsArrayList.toArray(new Call[callsArrayList.size()]);
     }
 
@@ -211,6 +223,8 @@ public class StackImpl implements Stack , CallEvents.CallStateListener{
             //call.removeCallEventListener(this);
             calls.remove(call.getID());
         }
+        if(call.getCallState() == CallState.ACTIVE)
+            hold_calls_except(call);
     }
 
 

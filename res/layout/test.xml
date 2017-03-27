@@ -1,109 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="0.7"
+        android:layout_width="0dp"
+        android:gravity="center_horizontal"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:width="180dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textView"
-        android:layout_marginTop="11dp"
 
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/txt_number"
-        android:layout_marginTop="58dp"
-        android:width="180dp"
-        android:layout_alignParentTop="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mute"
-        android:id="@+id/btn_mute"
-        android:layout_marginTop="28dp"
-        android:layout_below="@+id/btn_hold"
-        android:layout_alignStart="@+id/btn_hold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/textView"
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hold"
-        android:id="@+id/btn_hold"
-        android:layout_marginTop="39dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true" />
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/txt_number"/>
+        <LinearLayout
+            android:id="@+id/out_call_controlers"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mute"
+            android:id="@+id/btn_mute" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Accept"
-        android:id="@+id/btn_accept"
-        android:layout_below="@+id/btn_mute"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="17dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hold"
+            android:id="@+id/btn_hold"
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reject"
-        android:id="@+id/btn_reject"
-        android:layout_alignBaseline="@+id/btn_accept"
-        android:layout_alignBottom="@+id/btn_accept"
-        android:layout_toEndOf="@+id/btn_accept" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UnMute"
-        android:id="@+id/btn_unmute"
-        android:layout_alignBaseline="@+id/btn_mute"
-        android:layout_alignBottom="@+id/btn_mute"
-        android:layout_toEndOf="@+id/btn_mute" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HangUP"
-        android:id="@+id/btn_hangup"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="56dp"
-        android:layout_below="@+id/btn_reject"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HangUP"
+            android:id="@+id/btn_hangup"/>
+            </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/in_call_controlers"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accept"
+                android:id="@+id/btn_accept"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UnHold"
-        android:id="@+id/btn_unhold"
-        android:layout_toRightOf="@+id/btn_hold"
-        android:layout_alignTop="@+id/btn_hold"
-         />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reject"
+                android:id="@+id/btn_reject" />
 
-    <Button
-        android:text="Linphone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_linphone"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/btn_hangup" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></View>
+
+        <Button
+            android:text="Linphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_linphone" />
+
+    </LinearLayout>
+
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_calls"
-        android:layout_width="200dp"
-        android:layout_alignParentRight="true"
-        android:translationZ="300dp"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"/>
 
 
 
-</RelativeLayout>
+</LinearLayout>

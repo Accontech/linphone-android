@@ -35,6 +35,7 @@ public interface Stack {
      * INTERNAL USE .
      */
     void add_new_call(Call call);
+
     Call getCallById(String id);
     Call[] getActiveCalls();
 
