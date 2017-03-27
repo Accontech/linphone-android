@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/loginscrollview"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/credentials"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="120dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PROVIDER"
+            android:textColor="#bebdb9"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+
+            />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/telmex1x"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            />
+
+        <EditText
+            android:id="@+id/email_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email Address "
+            android:textColorHint="#bebdb9"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="100dp"
+            android:singleLine="true"
+            android:layout_marginLeft="20dp"
+            />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password "
+            android:textColorHint="#bebdb9"
+            android:inputType="textPassword"
+            android:layout_marginRight="100dp"
+            android:singleLine="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save Credentials"
+                android:textColor="#bebdb9"
+                />
+
+            <Switch
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="20dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/credentials"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="Log In"
+            android:layout_gravity="center"
+            android:textAppearance="?android:textAppearanceMedium"
+            />
+
+        <ImageView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/login_next2x"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>
